@@ -1,0 +1,8 @@
+python-multipart
+fastapi 
+uvicorn 
+torch 
+monai 
+nibabel 
+matplotlib 
+numpy
