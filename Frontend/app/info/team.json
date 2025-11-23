@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "name": "Dr. Rajesh Kumar",
+    "email": "rajesh.kumar@ycce.edu",
+    "role": "guide",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rajesh&backgroundColor=b6e3f4"
+  },
+  {
+    "id": 2,
+    "name": "Aarav Sharma",
+    "email": "aarav.sharma@student.ycce.edu",
+    "role": "student",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav&backgroundColor=c0aede"
+  },
+  {
+    "id": 3,
+    "name": "Priya Deshmukh",
+    "email": "priya.deshmukh@student.ycce.edu",
+    "role": "student",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya&backgroundColor=ffd5dc"
+  },
+  {
+    "id": 4,
+    "name": "Arjun Patel",
+    "email": "arjun.patel@student.ycce.edu",
+    "role": "student",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun&backgroundColor=d1d4f9"
+  },
+  {
+    "id": 5,
+    "name": "Sneha Kulkarni",
+    "email": "sneha.kulkarni@student.ycce.edu",
+    "role": "student",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha&backgroundColor=b6e3f4"
+  },
+  {
+    "id": 6,
+    "name": "Rohit Mehta",
+    "email": "rohit.mehta@student.ycce.edu",
+    "role": "student",
+    "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohit&backgroundColor=ffeaa7"
+  }
+]

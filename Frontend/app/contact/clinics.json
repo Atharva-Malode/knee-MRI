@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Advanced Knee Care Clinic",
+    "doctor": "Dr. Rajesh Sharma",
+    "phone": "+91 98765 43210",
+    "specialization": "ACL Reconstruction & Sports Medicine",
+    "lat": 21.1458,
+    "lng": 79.0882,
+    "address": "Sitabuldi, Nagpur, Maharashtra"
+  },
+  {
+    "id": 2,
+    "name": "Orthopedic Excellence Center",
+    "doctor": "Dr. Priya Deshmukh",
+    "phone": "+91 98234 56789",
+    "specialization": "Knee MRI Diagnostics & Meniscus Treatment",
+    "lat": 21.1619,
+    "lng": 79.0873,
+    "address": "Dharampeth, Nagpur, Maharashtra"
+  },
+  {
+    "id": 3,
+    "name": "SportsMed Knee Institute",
+    "doctor": "Dr. Anil Patil",
+    "phone": "+91 97654 32109",
+    "specialization": "Ligament Tears & Knee Arthroscopy",
+    "lat": 21.1294,
+    "lng": 79.0785,
+    "address": "Ramdaspeth, Nagpur, Maharashtra"
+  },
+  {
+    "id": 4,
+    "name": "Precision Orthopedics",
+    "doctor": "Dr. Sneha Kulkarni",
+    "phone": "+91 96543 21098",
+    "specialization": "PCL & MCL Tear Management",
+    "lat": 21.1702,
+    "lng": 79.0950,
+    "address": "Civil Lines, Nagpur, Maharashtra"
+  },
+  {
+    "id": 5,
+    "name": "Joint & Ligament Clinic",
+    "doctor": "Dr. Vikram Mehta",
+    "phone": "+91 95432 10987",
+    "specialization": "Complex Knee Injuries & Reconstruction",
+    "lat": 21.1138,
+    "lng": 79.0631,
+    "address": "Sadar, Nagpur, Maharashtra"
+  },
+  {
+    "id": 6,
+    "name": "Elite Knee Surgery Center",
+    "doctor": "Dr. Kavita Joshi",
+    "phone": "+91 94321 09876",
+    "specialization": "Knee MRI Analysis & Cartilage Repair",
+    "lat": 21.0991,
+    "lng": 79.0757,
+    "address": "Gandhibagh, Nagpur, Maharashtra"
+  }
+]
