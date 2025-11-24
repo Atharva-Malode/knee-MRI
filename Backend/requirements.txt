@@ -6,3 +6,4 @@ monai
 nibabel 
 matplotlib 
 numpy
+torchvision
