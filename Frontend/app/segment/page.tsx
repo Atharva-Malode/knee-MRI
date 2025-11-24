@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import JSZip from 'jszip';
 import { Upload, Loader2, Bone, CheckCircle, Activity, Brain } from 'lucide-react';
 
 interface SegmentationResults {
@@ -20,26 +22,73 @@ const HEALING_MESSAGES = [
 ];
 
 export default function SegmentationPage() {
+  const router = useRouter();
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [npyForClassify, setNpyForClassify] = useState<File | null>(null);
   const [isSegmenting, setIsSegmenting] = useState(false);
   const [segmentationResults, setSegmentationResults] = useState<SegmentationResults | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [currentMessage, setCurrentMessage] = useState(0);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Check file extension
-    const fileName = file.name.toLowerCase();
-    if (!fileName.endsWith('.nii.gz') && !fileName.endsWith('.nii') && !fileName.endsWith('.zip')) {
-      setError('Please upload a valid .nii, .nii.gz, or .zip file');
+    const fileNameLower = file.name.toLowerCase();
+    setError(null);
+    setSegmentationResults(null);
+
+    if (fileNameLower.endsWith('.zip')) {
+      const zip = new JSZip();
+      try {
+        const contents = await zip.loadAsync(file);
+        let niiContent: Uint8Array | null = null;
+        let npyContent: Uint8Array | null = null;
+        let niiName = '';
+        let npyName = '';
+
+        for (const [name, content] of Object.entries(contents.files)) {
+          if (name.toLowerCase().endsWith('.nii.gz')) {
+            niiContent = await content.async('uint8array');
+            niiName = name.split('/').pop() || 'extracted.nii.gz';
+          } else if (name.toLowerCase().endsWith('.npy')) {
+            npyContent = await content.async('uint8array');
+            npyName = name.split('/').pop() || 'data.npy';
+          }
+        }
+
+        if (!niiContent) {
+          setError('No .nii.gz file found in the zip archive.');
+          return;
+        }
+
+        // Create a new ArrayBuffer-backed Uint8Array copy to satisfy Blob's expected ArrayBufferView type
+        const niiArray = new Uint8Array(niiContent);
+        const niiBlob = new Blob([niiArray], { type: 'application/gzip' });
+        const extractedNii = new File([niiBlob], niiName);
+        setUploadedFile(extractedNii);
+        if (npyContent) {
+          // Ensure ArrayBuffer-backed Uint8Array for Blob compatibility
+          const npyArray = new Uint8Array(npyContent);
+          const npyBlob = new Blob([npyArray], { type: 'application/octet-stream' });
+          const extractedNpy = new File([npyBlob], npyName);
+          setNpyForClassify(extractedNpy);
+        } else {
+          setNpyForClassify(null);
+        }
+      } catch (err) {
+        setError('Failed to extract zip file. Please ensure it is a valid archive.');
+        console.error(err);
+      }
       return;
     }
 
-    setUploadedFile(file);
-    setError(null);
-    setSegmentationResults(null);
+    if (fileNameLower.endsWith('.nii.gz') || fileNameLower.endsWith('.nii')) {
+      setUploadedFile(file);
+      setNpyForClassify(null);
+    } else {
+      setError('Please upload a valid .nii, .nii.gz, or .zip file');
+    }
   };
 
   const handleSegment = async () => {
@@ -79,8 +128,26 @@ export default function SegmentationPage() {
     }
   };
 
+  const handleGoToClassify = () => {
+    sessionStorage.setItem('uploadedFileName', uploadedFile?.name || 'MRI Scan');
+
+    if (npyForClassify) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = (reader.result as string).split(',')[1];
+        sessionStorage.setItem('npyBase64', base64);
+        sessionStorage.setItem('npyName', npyForClassify.name);
+        router.push('/classify');
+      };
+      reader.readAsDataURL(npyForClassify);
+    } else {
+      router.push('/classify');
+    }
+  };
+
   const resetUpload = () => {
     setUploadedFile(null);
+    setNpyForClassify(null);
     setSegmentationResults(null);
     setError(null);
   };
@@ -277,13 +344,7 @@ export default function SegmentationPage() {
                   
                   {/* Classify Button - Always visible */}
                   <button
-                    onClick={() => {
-                      // Store file in sessionStorage for classify page
-                      if (uploadedFile) {
-                        sessionStorage.setItem('uploadedFileName', uploadedFile.name);
-                      }
-                      window.location.href = '/classify';
-                    }}
+                    onClick={handleGoToClassify}
                     className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-purple-500/50 flex items-center justify-center gap-2"
                   >
                     <Brain className="w-5 h-5" />

@@ -30,6 +30,30 @@ export default function ClassifyPage() {
     // Get previous filename from session storage for reference
     const storedFileName = sessionStorage.getItem('uploadedFileName');
     setPreviousFileName(storedFileName || 'MRI Scan');
+
+    // Check for preloaded npy from segmentation zip flow
+    const base64 = sessionStorage.getItem('npyBase64');
+    const npyName = sessionStorage.getItem('npyName');
+    if (base64 && npyName) {
+      try {
+        const byteCharacters = atob(base64);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+        const preloadedFile = new File([blob], npyName);
+        setUploadedClfFile(preloadedFile);
+        setFileName(npyName);
+      } catch (err) {
+        console.error('Failed to load preloaded .npy file:', err);
+        setError('Failed to load preloaded classification file.');
+      } finally {
+        sessionStorage.removeItem('npyBase64');
+        sessionStorage.removeItem('npyName');
+      }
+    }
   }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -298,7 +322,7 @@ export default function ClassifyPage() {
           )}
 
           {/* Error State */}
-          {error && !isClassifying && (
+          {error && !isClassifying && !classificationResult && (
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-red-700 shadow-2xl">
               <div className="text-center">
                 <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
