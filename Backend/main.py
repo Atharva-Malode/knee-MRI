@@ -49,7 +49,7 @@ print("Classification device:", CLF_DEVICE)
 # ----------- SEGMENTATION MODEL SETUP ---------------------
 # =========================================================
 
-SEG_MODEL_PATH = r"C:\Users\athar\OneDrive\Desktop\Atharva\knee_MRI\Backend\model\segment.pth"
+SEG_MODEL_PATH = r"D:\Atharva\knee-MRI\Backend\model\segment.pth"
 NUM_CLASSES = 6
 
 seg_model = UNet(
@@ -177,7 +177,7 @@ class MRNetResNet(nn.Module):
         return self.model(x)
 
 
-CLF_MODEL_PATH = r"C:\Users\athar\OneDrive\Desktop\Atharva\knee_MRI\Backend\model\classify.pth"
+CLF_MODEL_PATH = r"D:\Atharva\knee-MRI\Backend\model\classify.pth"
 
 clf_model = MRNetResNet().to(CLF_DEVICE)
 clf_model.load_state_dict(torch.load(CLF_MODEL_PATH, map_location=CLF_DEVICE))
